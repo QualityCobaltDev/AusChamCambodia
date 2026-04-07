@@ -17,11 +17,14 @@ RUN pnpm build
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3008
 RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
+
 USER nextjs
-EXPOSE 3000
+EXPOSE 3008
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -q -O - "http://127.0.0.1:${PORT}/api/health" >/dev/null || exit 1
 CMD ["node", "server.js"]
