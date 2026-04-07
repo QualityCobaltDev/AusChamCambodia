@@ -1,15 +1,30 @@
 import Link from 'next/link';
+import { Container } from '@/components/ui/primitives';
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between">
-        <p>© {new Date().getFullYear()} AusCham Cambodia. Structured placeholder content for rebuild phase.</p>
-        <div className="flex gap-4">
-          <Link href="/privacy-policy">Privacy Policy</Link>
-          <Link href="/terms">Terms</Link>
+    <footer className="mt-18 border-t border-brand-neutral-200 bg-white">
+      <Container className="grid gap-8 py-10 md:grid-cols-3">
+        <div>
+          <p className="font-semibold text-brand-navy-900">AusCham Cambodia</p>
+          <p className="mt-2 text-sm text-brand-neutral-500">Authority-led platform supporting Australia–Cambodia business expansion and trusted market access.</p>
         </div>
-      </div>
+        <div className="text-sm text-brand-neutral-700">
+          <p className="font-medium text-brand-navy-900">Platform</p>
+          <ul className="mt-2 space-y-2">
+            <li><Link href="/membership">Membership</Link></li>
+            <li><Link href="/events">Events</Link></li>
+            <li><Link href="/resources">Resources</Link></li>
+          </ul>
+        </div>
+        <div className="text-sm text-brand-neutral-700">
+          <p className="font-medium text-brand-navy-900">Legal</p>
+          <ul className="mt-2 space-y-2">
+            <li><Link href="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link href="/terms">Terms</Link></li>
+          </ul>
+        </div>
+      </Container>
     </footer>
   );
 }
