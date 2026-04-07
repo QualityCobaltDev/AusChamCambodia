@@ -1,0 +1,19 @@
+name: auscham_cambodia
+
+services:
+  web:
+    container_name: auscham_cambodia_web
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ../deploy/.env.production
+    ports:
+      - '127.0.0.1:3101:3000'
+    networks:
+      - auscham_net
+
+networks:
+  auscham_net:
+    name: auscham_cambodia_network
