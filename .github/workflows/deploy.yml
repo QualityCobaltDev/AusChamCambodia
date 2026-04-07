@@ -1,0 +1,101 @@
+name: Deploy to VPS (missioncontrol.quest)
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy (default: main)'
+        required: false
+        default: 'main'
+      reason:
+        description: 'Why are you deploying?'
+        required: false
+        default: 'manual release'
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-missioncontrol
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Safe VPS deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.AUTO_DEPLOY_ON_MAIN == 'true')
+    environment: production
+
+    steps:
+      - name: Deployment guardrails
+        run: |
+          echo "Deploy target: 207.180.207.22"
+          echo "Domain target: missioncontrol.quest"
+          echo "This workflow only runs the repo-safe deploy script on the isolated project stack."
+
+      - name: Start SSH agent and load deploy key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_USER: ${{ secrets.VPS_SSH_USER }}
+          DEPLOY_BRANCH: ${{ github.event.inputs.branch || 'main' }}
+          REMOTE_APP_DIR: ${{ secrets.VPS_APP_DIR }}
+          OPTIONAL_ENV_B64: ${{ secrets.DEPLOY_ENV_B64 }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${VPS_HOST}" ] || [ -z "${VPS_SSH_USER}" ]; then
+            echo "Missing required secrets VPS_HOST and/or VPS_SSH_USER." >&2
+            exit 1
+          fi
+
+          APP_DIR="${REMOTE_APP_DIR:-/var/www/auscham-missioncontrol}"
+
+          echo "Deploy branch: ${DEPLOY_BRANCH}"
+          echo "Remote dir: ${APP_DIR}"
+
+          ssh -o BatchMode=yes "${VPS_SSH_USER}@${VPS_HOST}" "bash -se" <<EOF
+          set -euo pipefail
+
+          APP_DIR="${APP_DIR}"
+          BRANCH="${DEPLOY_BRANCH}"
+
+          if [ ! -d "\${APP_DIR}/.git" ]; then
+            echo "Expected git repo at \${APP_DIR}, but it was not found." >&2
+            exit 1
+          fi
+
+          cd "\${APP_DIR}"
+
+          if [ -n "${OPTIONAL_ENV_B64}" ]; then
+            echo "Writing deploy/.env.production from DEPLOY_ENV_B64 secret"
+            mkdir -p deploy
+            echo "${OPTIONAL_ENV_B64}" | base64 -d > deploy/.env.production
+            chmod 600 deploy/.env.production
+          fi
+
+          if [ ! -x ./deploy/deploy.sh ]; then
+            echo "deploy/deploy.sh is missing or not executable." >&2
+            exit 1
+          fi
+
+          ./deploy/deploy.sh "\${BRANCH}"
+          EOF
+
+      - name: Auto-deploy instructions
+        if: github.event_name == 'push' && vars.AUTO_DEPLOY_ON_MAIN != 'true'
+        run: |
+          echo "Push to main detected, but auto-deploy is disabled."
+          echo "To enable automatic deploy on merge/push to main, set repository variable AUTO_DEPLOY_ON_MAIN=true."
