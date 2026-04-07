@@ -5,11 +5,13 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { Card, Container, Heading, Section, Text } from '@/components/ui/primitives';
 import { buildMetadata } from '@/lib/seo';
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
   return buildMetadata({
-    title: `Event: ${params.slug.replaceAll('-', ' ')}`,
+    title: `Event: ${slug.replaceAll('-', ' ')}`,
     description: 'Event detail template with agenda framing, registration pathways, and related links.',
-    path: `/events/${params.slug}`,
+    path: `/events/${slug}`,
   });
 }
 

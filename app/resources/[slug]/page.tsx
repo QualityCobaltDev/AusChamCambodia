@@ -5,11 +5,13 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { Card, Container, Heading, Section, Text } from '@/components/ui/primitives';
 import { buildMetadata } from '@/lib/seo';
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
   return buildMetadata({
-    title: `Resource: ${params.slug.replaceAll('-', ' ')}`,
+    title: `Resource: ${slug.replaceAll('-', ' ')}`,
     description: 'Resource detail template for guides, insights, reports, and related reading journeys.',
-    path: `/resources/${params.slug}`,
+    path: `/resources/${slug}`,
   });
 }
 
