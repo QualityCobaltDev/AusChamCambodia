@@ -102,3 +102,5 @@ git reset --hard <commit-sha>
 > Important: this scaffold intentionally uses dedicated compose project names, network names, container names, env files, and upstream port mapping (`127.0.0.1:3008`) to avoid impact on any existing live website.
 
 For full VPS operations, backup, and Nginx routing steps, see `deploy/README.md`.
+
+Pre-launch QA and hardening gates are documented in `docs/qa-hardening-launch-checklists.md`.
