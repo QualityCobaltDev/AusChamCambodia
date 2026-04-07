@@ -8,11 +8,14 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BUILD_SHA: ${NEXT_PUBLIC_BUILD_SHA:-dev}
     env_file:
       - ../deploy/.env.production
     environment:
       NODE_ENV: production
       PORT: ${APP_PORT:-3008}
+      APP_BUILD_SHA: ${NEXT_PUBLIC_BUILD_SHA:-dev}
     ports:
       - '127.0.0.1:${HOST_BIND_PORT:-3008}:${APP_PORT:-3008}'
     healthcheck:

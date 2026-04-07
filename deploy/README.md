@@ -17,14 +17,29 @@ This runbook deploys the AusCham rebuild **without affecting any existing websit
 sudo mkdir -p /var/www/auscham-missioncontrol
 sudo chown -R "$USER":"$USER" /var/www/auscham-missioncontrol
 cd /var/www/auscham-missioncontrol
-# copy repository contents here
+# clone repository contents here
 cp deploy/.env.production.example deploy/.env.production
 ```
 
-## Deploy application stack first (isolated)
+## One-command deploy
+Production (`main`):
 ```bash
 ./deploy/deploy.sh
 ```
+
+Optional staging branch:
+```bash
+./deploy/deploy.sh staging
+```
+
+### What `deploy.sh` does
+1. Validates `deploy/.env.production` exists.
+2. Fetches the latest refs from `origin`.
+3. Checks out target branch and runs `git pull --ff-only`.
+4. Runs `pnpm install --frozen-lockfile` and `pnpm build`.
+5. Builds Docker image for isolated service only.
+6. Restarts only `auscham_missioncontrol_web`.
+7. Waits for health and records successful commit in `deploy/.last_successful_sha`.
 
 ## Add a dedicated Nginx vhost safely (do not touch existing live site)
 ```bash
@@ -76,9 +91,19 @@ sudo certbot renew --dry-run
 5. Confirm HTTPS serves app: `curl -I https://missioncontrol.quest`
 6. Confirm existing site still responds normally on its own domain.
 
-## Rollback (reversible)
-If anything fails, roll back Nginx only for this project without touching other sites:
+## Rollback
+### Application rollback
+Rollback to last successful deployed commit:
+```bash
+./deploy/rollback.sh
+```
 
+Rollback to an explicit commit:
+```bash
+./deploy/rollback.sh <commit-sha> main
+```
+
+### Nginx rollback (project only)
 ```bash
 # Disable this single vhost
 sudo rm -f /etc/nginx/sites-enabled/auscham-missioncontrol.conf
@@ -89,11 +114,6 @@ sudo rm -f /etc/nginx/sites-enabled/auscham-missioncontrol.conf
 # Validate and reload
 sudo nginx -t
 sudo systemctl reload nginx
-```
-
-Application rollback remains available:
-```bash
-./deploy/deploy.sh --rollback
 ```
 
 ## Backup project deployment assets

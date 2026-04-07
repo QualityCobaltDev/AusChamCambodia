@@ -9,11 +9,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BUILD_SHA: ${NEXT_PUBLIC_BUILD_SHA:-dev}
     env_file:
       - deploy/.env.production
     environment:
       NODE_ENV: production
       PORT: ${APP_PORT:-3008}
+      APP_BUILD_SHA: ${NEXT_PUBLIC_BUILD_SHA:-dev}
     ports:
       # Bind on localhost only so only host Nginx can access this app.
       # This avoids exposing another public port and prevents collisions with other projects.
