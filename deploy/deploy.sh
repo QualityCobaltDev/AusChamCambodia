@@ -1,61 +1,85 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+log() {
+  printf '[AusCham][deploy] %s\n' "$*"
+}
+
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_NAME="auscham-missioncontrol"
 COMPOSE_FILE="$PROJECT_ROOT/docker-compose.yml"
 ENV_FILE="$PROJECT_ROOT/deploy/.env.production"
-STATE_FILE="$PROJECT_ROOT/deploy/.last_successful_tag"
+STATE_FILE="$PROJECT_ROOT/deploy/.last_successful_sha"
+TARGET_BRANCH="${1:-main}"
 
 if [[ ! -f "$ENV_FILE" ]]; then
-  echo "[AusCham] Missing $ENV_FILE. Create it from deploy/.env.production.example first."
+  log "Missing $ENV_FILE. Create it from deploy/.env.production.example first."
   exit 1
 fi
 
 cd "$PROJECT_ROOT"
 
-if [[ "${1:-}" == "--rollback" ]]; then
-  if [[ ! -f "$STATE_FILE" ]]; then
-    echo "[AusCham] No prior release tag found in $STATE_FILE"
-    exit 1
-  fi
-  export IMAGE_TAG
-  IMAGE_TAG="$(cat "$STATE_FILE")"
-  echo "[AusCham] Rolling back to IMAGE_TAG=$IMAGE_TAG"
-  docker compose --project-name "$PROJECT_NAME" -f "$COMPOSE_FILE" --env-file "$ENV_FILE" up -d web
-  exit 0
+log "Starting deployment for branch: $TARGET_BRANCH"
+log "Project root: $PROJECT_ROOT"
+
+CURRENT_REF="$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+log "Current git ref: $CURRENT_REF"
+
+log "Fetching latest refs from origin"
+git fetch --prune origin
+
+if ! git show-ref --verify --quiet "refs/remotes/origin/$TARGET_BRANCH"; then
+  log "Remote branch origin/$TARGET_BRANCH not found."
+  exit 1
 fi
 
-PREVIOUS_TAG=""
-if [[ -f "$STATE_FILE" ]]; then
-  PREVIOUS_TAG="$(cat "$STATE_FILE")"
-fi
+log "Checking out branch: $TARGET_BRANCH"
+git checkout "$TARGET_BRANCH"
 
-NEW_TAG="$(date +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)"
-export IMAGE_TAG="$NEW_TAG"
+log "Fast-forwarding local branch to origin/$TARGET_BRANCH"
+git pull --ff-only origin "$TARGET_BRANCH"
 
-echo "[AusCham] Building image tag: $IMAGE_TAG"
-docker compose --project-name "$PROJECT_NAME" -f "$COMPOSE_FILE" --env-file "$ENV_FILE" build web
+FULL_SHA="$(git rev-parse HEAD)"
+SHORT_SHA="$(git rev-parse --short HEAD)"
+export IMAGE_TAG="${SHORT_SHA}-$(date +%Y%m%d%H%M%S)"
+export NEXT_PUBLIC_BUILD_SHA="$SHORT_SHA"
 
-echo "[AusCham] Starting updated container (isolated stack)"
-docker compose --project-name "$PROJECT_NAME" -f "$COMPOSE_FILE" --env-file "$ENV_FILE" up -d web
+log "Resolved deploy commit: $FULL_SHA"
+log "Using image tag: $IMAGE_TAG"
+
+log "Installing dependencies in lockfile mode"
+pnpm install --frozen-lockfile
+
+log "Running production build verification"
+pnpm build
+
+log "Building Docker image"
+docker compose \
+  --project-name "$PROJECT_NAME" \
+  -f "$COMPOSE_FILE" \
+  --env-file "$ENV_FILE" \
+  build web
+
+log "Restarting isolated application container"
+docker compose \
+  --project-name "$PROJECT_NAME" \
+  -f "$COMPOSE_FILE" \
+  --env-file "$ENV_FILE" \
+  up -d web
 
 CONTAINER_NAME="auscham_missioncontrol_web"
-for _ in $(seq 1 30); do
+log "Waiting for health status from container: $CONTAINER_NAME"
+for _ in $(seq 1 45); do
   status="$(docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$CONTAINER_NAME" 2>/dev/null || true)"
   if [[ "$status" == "healthy" || "$status" == "no-healthcheck" ]]; then
-    echo "$IMAGE_TAG" > "$STATE_FILE"
-    echo "[AusCham] Deploy healthy. Release recorded in $STATE_FILE"
+    printf '%s\n' "$FULL_SHA" > "$STATE_FILE"
+    log "Deployment healthy on commit: $FULL_SHA"
+    log "Release state recorded in $STATE_FILE"
     exit 0
   fi
   sleep 2
 done
 
-echo "[AusCham] Health check failed for new release $IMAGE_TAG"
-if [[ -n "$PREVIOUS_TAG" ]]; then
-  echo "[AusCham] Reverting to prior release tag: $PREVIOUS_TAG"
-  export IMAGE_TAG="$PREVIOUS_TAG"
-  docker compose --project-name "$PROJECT_NAME" -f "$COMPOSE_FILE" --env-file "$ENV_FILE" up -d web
-fi
-
+log "Health check failed for commit: $FULL_SHA"
+log "See container logs: docker logs $CONTAINER_NAME --tail 200"
 exit 1

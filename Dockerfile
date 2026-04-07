@@ -10,6 +10,8 @@ RUN pnpm install --frozen-lockfile=false
 
 FROM base AS builder
 WORKDIR /app
+ARG NEXT_PUBLIC_BUILD_SHA=dev
+ENV NEXT_PUBLIC_BUILD_SHA=$NEXT_PUBLIC_BUILD_SHA
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm build

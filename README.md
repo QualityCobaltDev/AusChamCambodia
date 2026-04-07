@@ -45,7 +45,7 @@ pnpm build
 - `deploy/` - deployment and Nginx config artifacts
 - `docs/architecture.md` - architecture and deployment strategy
 
-## Production deployment (isolated VPS setup)
+## Git-based deployment workflow (VPS-safe)
 Target VPS: `207.180.207.22`  
 Temporary domain: `missioncontrol.quest`
 
@@ -54,14 +54,51 @@ Temporary domain: `missioncontrol.quest`
    ```bash
    cp deploy/.env.production.example deploy/.env.production
    ```
-3. Build and run isolated compose stack:
+3. Deploy from `main` in one command:
    ```bash
    ./deploy/deploy.sh
    ```
-4. Add `deploy/nginx.auscham.conf` as a dedicated host config (sites-available/sites-enabled).
-5. Reload Nginx.
+4. Deploy an alternate branch (for example, staging):
+   ```bash
+   ./deploy/deploy.sh staging
+   ```
+
+The deploy script now:
+- fetches `origin`
+- checks out target branch
+- fast-forwards safely with `git pull --ff-only`
+- runs `pnpm install --frozen-lockfile` + `pnpm build`
+- rebuilds Docker image with a commit-aware build arg
+- restarts only the isolated AusCham container
+- writes the successful full commit SHA to `deploy/.last_successful_sha`
+
+### Branch strategy
+- `main` → production branch for missioncontrol.quest
+- `staging` (optional) → pre-production validation branch (deploy only when needed)
+
+### Version stamp visibility
+- Footer displays `Build: <short-sha>` via `NEXT_PUBLIC_BUILD_SHA` injected at build time.
+- Runtime container also gets `APP_BUILD_SHA` for operator visibility.
+
+### Rollback options
+Rollback to the last successful commit:
+```bash
+./deploy/rollback.sh
+```
+
+Rollback to a specific commit:
+```bash
+./deploy/rollback.sh <commit-sha> main
+```
+
+Manual rollback procedure (if preferred):
+```bash
+git checkout main
+git fetch --prune origin
+git reset --hard <commit-sha>
+./deploy/deploy.sh main
+```
 
 > Important: this scaffold intentionally uses dedicated compose project names, network names, container names, env files, and upstream port mapping (`127.0.0.1:3008`) to avoid impact on any existing live website.
 
-
-For full VPS operations, backup, and rollback commands, see `deploy/README.md`.
+For full VPS operations, backup, and Nginx routing steps, see `deploy/README.md`.
