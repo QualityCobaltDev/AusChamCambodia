@@ -58,6 +58,19 @@ sudo systemctl reload nginx
 
 > Do **not** edit or replace `/etc/nginx/nginx.conf` for this project.
 
+
+## Optional legacy redirect include
+If migrating from an existing URL structure, install the migration snippet as a vhost-local include:
+
+```bash
+sudo cp deploy/nginx.redirects.auscham.conf /etc/nginx/snippets/auscham-migration-redirects.conf
+# Then uncomment the include line inside /etc/nginx/sites-available/auscham-missioncontrol.conf
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Keep redirect logic scoped to this project vhost; do not place it in global nginx.conf.
+
 ## Issue SSL certificates with Certbot
 Use webroot mode to avoid editing unrelated server blocks.
 
