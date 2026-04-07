@@ -49,7 +49,7 @@ pnpm build
 Target VPS: `207.180.207.22`  
 Temporary domain: `missioncontrol.quest`
 
-1. Place repo in isolated directory (example `/srv/auscham-cambodia`).
+1. Place repo in isolated directory (example `/var/www/auscham-missioncontrol`).
 2. Create deployment env file:
    ```bash
    cp deploy/.env.production.example deploy/.env.production
@@ -58,7 +58,10 @@ Temporary domain: `missioncontrol.quest`
    ```bash
    ./deploy/deploy.sh
    ```
-4. Add `deploy/nginx.auscham.conf` as a dedicated host config.
+4. Add `deploy/nginx.auscham.conf` as a dedicated host config (sites-available/sites-enabled).
 5. Reload Nginx.
 
-> Important: this scaffold intentionally uses dedicated compose project names, network names, container names, env files, and upstream port mapping (`127.0.0.1:3101`) to avoid impact on any existing live website.
+> Important: this scaffold intentionally uses dedicated compose project names, network names, container names, env files, and upstream port mapping (`127.0.0.1:3008`) to avoid impact on any existing live website.
+
+
+For full VPS operations, backup, and rollback commands, see `deploy/README.md`.
