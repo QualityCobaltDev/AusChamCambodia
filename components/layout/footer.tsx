@@ -32,10 +32,10 @@ export function Footer() {
           <p className="font-medium text-brand-navy-900">Legal</p>
           <ul className="mt-2 space-y-2">
             <li>
-              <Link href="/privacy-policy">Privacy Policy</Link>
+              <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <Link href="/terms">Terms</Link>
+              <Link href="/legal/terms-of-use">Terms</Link>
             </li>
           </ul>
         </div>
