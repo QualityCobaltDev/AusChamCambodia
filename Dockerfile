@@ -21,7 +21,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3008
 RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
-RUN mkdir -p ./public
+RUN mkdir -p ./public ./public/uploads ./data && chown -R nextjs:nextjs /app
 COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 
