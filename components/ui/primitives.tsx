@@ -12,7 +12,7 @@ export function Button({ className, variant = 'primary', size = 'md', ...props }
     'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-in-out focus-visible:outline-none disabled:pointer-events-none disabled:opacity-45 hover:-translate-y-0.5 hover:scale-[1.01]';
   const variants = {
     primary: 'bg-brand-blue-700 text-white shadow-soft hover:bg-brand-blue-600 hover:shadow-lift active:bg-brand-navy-900',
-    secondary: 'border border-brand-neutral-200 bg-white text-brand-neutral-700 shadow-sm hover:border-brand-blue-700 hover:text-brand-blue-700 hover:shadow-soft',
+    secondary: 'border border-brand-blue-700/30 bg-brand-blue-50 text-brand-blue-700 shadow-sm hover:border-brand-blue-700 hover:bg-white hover:text-brand-blue-700 hover:shadow-soft',
     ghost: 'text-brand-neutral-700 hover:bg-brand-blue-100/70',
   };
   const sizes = {
@@ -52,11 +52,11 @@ export function Text({ className, tone = 'default', ...props }: HTMLAttributes<H
 }
 
 export function Badge({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {
-  return <span className={cn('inline-flex rounded-full border border-brand-blue-700/20 bg-brand-blue-100/80 px-4 py-1.5 text-xs font-semibold tracking-[0.06em] text-brand-blue-700 uppercase', className)} {...props} />;
+  return <span className={cn('inline-flex rounded-full border border-brand-blue-700/30 bg-brand-blue-100 px-4 py-1.5 text-xs font-semibold tracking-[0.06em] text-brand-blue-700 uppercase', className)} {...props} />;
 }
 
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('surface-card group relative overflow-hidden p-8 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg', className)} {...props} />;
+  return <div className={cn('surface-card group relative overflow-hidden p-8 transition-all duration-200 ease-in-out before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-gradient-to-r before:from-brand-blue-700 before:to-brand-sky-400 hover:-translate-y-0.5 hover:shadow-lg', className)} {...props} />;
 }
 
 const fieldBase =

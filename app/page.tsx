@@ -44,8 +44,9 @@ export default function HomePage() {
   return (
     <>
       <Section className="fade-in-section relative overflow-hidden pb-18 pt-16 md:pt-20">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-blue-100/80 via-white to-white" />
-        <div className="pointer-events-none absolute left-[8%] top-10 h-80 w-80 rounded-full bg-brand-sky-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-blue-100 via-brand-blue-50 to-white" />
+        <div className="pointer-events-none absolute -right-12 top-0 h-96 w-96 rounded-full bg-brand-blue-700/15 blur-3xl" />
+        <div className="pointer-events-none absolute left-[8%] top-10 h-80 w-80 rounded-full bg-brand-sky-400/30 blur-3xl" />
         <Container className="relative">
           <Breadcrumbs items={[{ label: 'Home' }]} />
           <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
@@ -75,18 +76,18 @@ export default function HomePage() {
                 <span>Policy-backed network</span>
               </div>
             </div>
-            <div className="surface-card relative overflow-hidden rounded-2xl p-10">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue-100/70 via-white to-white" />
+            <div className="surface-card relative overflow-hidden rounded-2xl bg-brand-navy-900 p-10 text-white">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue-700/60 via-brand-navy-900 to-brand-navy-900" />
               <div className="relative grid gap-6">
-                <div className="h-40 rounded-xl border border-brand-neutral-200 bg-[linear-gradient(rgba(30,78,216,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(30,78,216,0.08)_1px,transparent_1px)] bg-[size:24px_24px]" />
+                <div className="h-40 rounded-xl border border-white/25 bg-[linear-gradient(rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:24px_24px]" />
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-xl border border-brand-neutral-200 bg-white p-5">
-                    <p className="text-sm text-brand-neutral-500">Active members</p>
-                    <p className="mt-2 text-2xl font-semibold text-brand-navy-900">{data.featuredPlans.length * 40}+</p>
+                  <div className="rounded-xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+                    <p className="text-sm text-blue-100">Active members</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{data.featuredPlans.length * 40}+</p>
                   </div>
-                  <div className="rounded-xl border border-brand-neutral-200 bg-white p-5">
-                    <p className="text-sm text-brand-neutral-500">Annual briefings</p>
-                    <p className="mt-2 text-2xl font-semibold text-brand-navy-900">{data.featuredResources.length * 12}+</p>
+                  <div className="rounded-xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+                    <p className="text-sm text-blue-100">Annual briefings</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{data.featuredResources.length * 12}+</p>
                   </div>
                 </div>
               </div>
@@ -95,13 +96,13 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section className="fade-in-section">
+      <Section className="fade-in-section bg-gradient-to-b from-white via-brand-blue-50/60 to-white">
         <Container>
           <Heading level="h2">Built for every business stage</Heading>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {data.featuredPlans.map((plan, index) => (
               <Card key={plan.id} className={index === 1 ? 'md:-translate-y-2 md:shadow-lift' : ''}>
-                <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-brand-blue-100/80 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand-blue-100 to-transparent opacity-70 transition-opacity duration-200 group-hover:opacity-100" />
                 <div className="relative">
                   <div className="inline-flex rounded-lg border border-brand-neutral-200 p-2">
                     <LineIcon path="M6 12h12 M12 6v12" />
@@ -123,7 +124,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section className="fade-in-section bg-white/70">
+      <Section className="fade-in-section bg-gradient-to-br from-brand-blue-50 via-white to-brand-blue-50/60">
         <Container>
           <Heading level="h2">Outcomes members rely on</Heading>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
@@ -144,7 +145,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section className="fade-in-section">
+      <Section className="fade-in-section bg-gradient-to-b from-white to-brand-blue-50/60">
         <Container>
           <Heading level="h2">Featured events and resources</Heading>
           <div className="mt-10 grid gap-8 md:grid-cols-2">
@@ -186,7 +187,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section className="fade-in-section bg-white/70">
+      <Section className="fade-in-section bg-gradient-to-r from-brand-blue-50 via-white to-brand-blue-50">
         <Container>
           <Heading level="h2">Trust proof</Heading>
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.3fr_1fr]">
@@ -199,7 +200,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {data.featuredPartners.slice(0, 4).map((partner) => (
-                <div key={partner.id} className="flex min-h-24 items-center justify-center rounded-xl border border-brand-neutral-200 bg-white px-3 text-center text-sm font-medium text-brand-neutral-400 transition-colors duration-200 hover:text-brand-blue-700">
+                <div key={partner.id} className="flex min-h-24 items-center justify-center rounded-xl border border-brand-blue-700/20 bg-white px-3 text-center text-sm font-medium text-brand-neutral-400 transition-colors duration-200 hover:border-brand-blue-700/40 hover:text-brand-blue-700">
                   {partner.name}
                 </div>
               ))}
@@ -210,7 +211,7 @@ export default function HomePage() {
 
       <Section className="fade-in-section">
         <Container>
-          <div className="overflow-hidden rounded-2xl border border-brand-neutral-200 bg-gradient-to-br from-brand-blue-100 via-white to-white p-10">
+          <div className="overflow-hidden rounded-2xl border border-brand-blue-700/20 bg-gradient-to-br from-brand-blue-100 via-brand-blue-50 to-white p-10">
             <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
               <div>
                 <Text tone="strong" className="text-2xl font-semibold">
