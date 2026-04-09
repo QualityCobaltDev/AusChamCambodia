@@ -5,6 +5,20 @@ log() {
   printf '[AusCham][deploy] %s\n' "$*"
 }
 
+resolve_compose_cmd() {
+  if docker compose version >/dev/null 2>&1; then
+    printf 'docker compose'
+    return 0
+  fi
+
+  if command -v docker-compose >/dev/null 2>&1; then
+    printf 'docker-compose'
+    return 0
+  fi
+
+  return 1
+}
+
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_NAME="auscham-missioncontrol"
 COMPOSE_FILE="$PROJECT_ROOT/docker-compose.yml"
@@ -16,6 +30,13 @@ if [[ ! -f "$ENV_FILE" ]]; then
   log "Missing $ENV_FILE. Create it from deploy/.env.production.example first."
   exit 1
 fi
+
+if ! COMPOSE_BIN="$(resolve_compose_cmd)"; then
+  log "Docker Compose not found. Install either the Docker Compose plugin ('docker compose') or docker-compose."
+  exit 1
+fi
+
+IFS=' ' read -r -a COMPOSE_CMD <<< "$COMPOSE_BIN"
 
 cd "$PROJECT_ROOT"
 
@@ -54,14 +75,14 @@ log "Running production build verification"
 pnpm build
 
 log "Building Docker image"
-docker compose \
+"${COMPOSE_CMD[@]}" \
   -p "$PROJECT_NAME" \
   -f "$COMPOSE_FILE" \
   --env-file "$ENV_FILE" \
   build web
 
 log "Restarting isolated application container"
-docker compose \
+"${COMPOSE_CMD[@]}" \
   -p "$PROJECT_NAME" \
   -f "$COMPOSE_FILE" \
   --env-file "$ENV_FILE" \
