@@ -67,7 +67,7 @@ The deploy script now:
 - fetches `origin`
 - checks out target branch
 - fast-forwards safely with `git pull --ff-only`
-- runs `pnpm install --frozen-lockfile` + `pnpm build`
+- runs `pnpm install --no-frozen-lockfile` + `pnpm build`
 - rebuilds Docker image with a commit-aware build arg
 - restarts only the isolated AusCham container
 - writes the successful full commit SHA to `deploy/.last_successful_sha`

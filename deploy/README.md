@@ -36,7 +36,7 @@ Optional staging branch:
 1. Validates `deploy/.env.production` exists.
 2. Fetches the latest refs from `origin`.
 3. Checks out target branch and runs `git pull --ff-only`.
-4. Runs `pnpm install --frozen-lockfile` and `pnpm build`.
+4. Runs `pnpm install --no-frozen-lockfile` and `pnpm build`.
 5. Builds Docker image for isolated service only.
 6. Restarts only `auscham_missioncontrol_web`.
 7. Waits for health and records successful commit in `deploy/.last_successful_sha`.
