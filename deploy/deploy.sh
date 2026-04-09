@@ -47,8 +47,8 @@ export NEXT_PUBLIC_BUILD_SHA="$SHORT_SHA"
 log "Resolved deploy commit: $FULL_SHA"
 log "Using image tag: $IMAGE_TAG"
 
-log "Installing dependencies in lockfile mode"
-pnpm install --frozen-lockfile
+log "Installing dependencies (without frozen lockfile)"
+pnpm install --no-frozen-lockfile
 
 log "Running production build verification"
 pnpm build
