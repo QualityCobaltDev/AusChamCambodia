@@ -1,4 +1,4 @@
-# GitHub Actions CI/CD for AusCham (missioncontrol.quest)
+# GitHub Actions CI/CD for AusCham (elevareai.online)
 
 This project includes isolated CI/CD workflows designed for a VPS that already hosts another website.
 
@@ -65,7 +65,7 @@ This allows safe rollout while keeping production protected.
 ## Manual Deploy
 
 From GitHub Actions UI:
-1. Open **Deploy to VPS (missioncontrol.quest)**.
+1. Open **Deploy to VPS (elevareai.online)**.
 2. Click **Run workflow**.
 3. Provide optional branch input (default `main`).
 4. Run.

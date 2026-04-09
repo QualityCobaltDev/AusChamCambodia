@@ -47,7 +47,7 @@ pnpm build
 
 ## Git-based deployment workflow (VPS-safe)
 Target VPS: `207.180.207.22`  
-Temporary domain: `missioncontrol.quest`
+Temporary domain: `elevareai.online`
 
 1. Place repo in isolated directory (example `/var/www/auscham-missioncontrol`).
 2. Create deployment env file:
@@ -73,7 +73,7 @@ The deploy script now:
 - writes the successful full commit SHA to `deploy/.last_successful_sha`
 
 ### Branch strategy
-- `main` → production branch for missioncontrol.quest
+- `main` → production branch for elevareai.online
 - `staging` (optional) → pre-production validation branch (deploy only when needed)
 
 ### Version stamp visibility

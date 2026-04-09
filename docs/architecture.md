@@ -9,7 +9,7 @@
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - pnpm for deterministic package management
 - Docker multi-stage image for lean production runtime
-- Nginx host-based reverse proxy routing (`missioncontrol.quest`)
+- Nginx host-based reverse proxy routing (`elevareai.online`)
 
 ## Isolation model (critical)
 1. **Separate directories**: deploy this repository under a dedicated project path (e.g. `/var/www/auscham-missioncontrol`).
@@ -45,7 +45,7 @@ The route tree follows chamber growth architecture:
 2. Copy `deploy/.env.production.example` to `deploy/.env.production` and fill secrets.
 3. Run `deploy/deploy.sh`.
 4. Install isolated Nginx config file (do not replace global config).
-5. Reload Nginx and verify `missioncontrol.quest` host routes to `127.0.0.1:3008`.
+5. Reload Nginx and verify `elevareai.online` host routes to `127.0.0.1:3008`.
 
 ## Safety controls
 - No reuse of existing container names or compose project names.

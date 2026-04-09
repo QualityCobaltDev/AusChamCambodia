@@ -1,4 +1,4 @@
-name: Deploy to VPS (missioncontrol.quest)
+name: Deploy to VPS (elevareai.online)
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
       - name: Deployment guardrails
         run: |
           echo "Deploy target: 207.180.207.22"
-          echo "Domain target: missioncontrol.quest"
+          echo "Domain target: elevareai.online"
           echo "This workflow only runs the repo-safe deploy script on the isolated project stack."
 
       - name: Start SSH agent and load deploy key
