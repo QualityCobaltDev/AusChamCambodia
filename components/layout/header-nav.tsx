@@ -29,11 +29,11 @@ export function HeaderNav() {
           </nav>
 
           <div className="justify-self-center text-center">
-            <Link className="inline-flex flex-col items-center" href="/" aria-label="AUSCham Cambodia">
-              <span className="text-[1.65rem] font-extrabold tracking-[-0.02em] text-brand-navy-900">AUSCham Cambodia</span>
+            <Link className="flex items-center justify-center" href="/" aria-label="AUSCham Cambodia">
+              <span className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900">AUSCham Cambodia</span>
             </Link>
             {contactLink ? (
-              <Link href={String(contactLink.href ?? '/contact')} className="mt-0.5 inline-flex text-sm font-semibold text-brand-neutral-700 transition-colors hover:text-brand-neutral-900">
+              <Link href={String(contactLink.href ?? '/contact')} className="mt-1 block text-sm font-semibold text-brand-neutral-700 transition-colors hover:text-brand-neutral-900">
                 {contactLink.title}
               </Link>
             ) : null}
