@@ -55,14 +55,14 @@ pnpm build
 
 log "Building Docker image"
 docker compose \
-  --project-name "$PROJECT_NAME" \
+  -p "$PROJECT_NAME" \
   -f "$COMPOSE_FILE" \
   --env-file "$ENV_FILE" \
   build web
 
 log "Restarting isolated application container"
 docker compose \
-  --project-name "$PROJECT_NAME" \
+  -p "$PROJECT_NAME" \
   -f "$COMPOSE_FILE" \
   --env-file "$ENV_FILE" \
   up -d web
