@@ -53,7 +53,7 @@ export default function HomePage() {
             <div>
               <Badge>{data.hero.eyebrow}</Badge>
               <Heading level="h1" className="mt-6 max-w-4xl">
-                A trusted platform for Australia–Cambodia business leadership
+                {data.hero.title}
               </Heading>
               <Text className="mt-6 max-w-2xl text-lg" tone="muted">
                 {data.hero.intro}

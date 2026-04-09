@@ -24,8 +24,8 @@ export default function Page() {
             <Card key={plan.id}>
               <Text tone="strong">{plan.name}</Text>
               <Text className="text-sm" tone="muted">{plan.segmentLabel}</Text>
-              <Text className="mt-2" tone="strong">${plan.annualPriceUsd.toLocaleString()} / year</Text>
-              {plan.onboardingFeeUsd ? <Text className="text-sm" tone="muted">Onboarding fee: ${plan.onboardingFeeUsd.toLocaleString()}</Text> : null}
+              <Text className="mt-2" tone="strong">${Number(plan.annualPriceUsd).toLocaleString()} / year</Text>
+              {plan.onboardingFeeUsd ? <Text className="text-sm" tone="muted">Onboarding fee: ${Number(plan.onboardingFeeUsd).toLocaleString()}</Text> : null}
               <Text className="mt-3">{plan.summary}</Text>
               <Link className="mt-4 inline-block text-sm font-medium text-brand-blue-700" href={`/membership/${plan.slug}`}>View details</Link>
             </Card>

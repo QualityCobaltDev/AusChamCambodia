@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getCmsClient } from '@/cms/client';
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { Button, Card, Container, Heading, Section, Text } from '@/components/ui/primitives';
+import { getPageContent } from '@/lib/cms-service';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
@@ -12,13 +13,14 @@ export const metadata = buildMetadata({
 
 export default function Page() {
   const plans = getCmsClient().getMembershipPlans();
+  const page = getPageContent('membership');
 
   return (
     <Section>
       <Container>
         <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Membership' }]} />
-        <Heading level="h1">Membership built around your operating model</Heading>
-        <Text className="mt-3 max-w-3xl" tone="muted">AusCham memberships are segmented by business context so each member sees relevant advocacy, market intelligence, and relationship opportunities.</Text>
+        <Heading level="h1">{page?.title ?? 'Membership built around your operating model'}</Heading>
+        <Text className="mt-3 max-w-3xl" tone="muted">{page?.body ?? 'AusCham memberships are segmented by business context so each member sees relevant advocacy, market intelligence, and relationship opportunities.'}</Text>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {plans.map((plan) => (

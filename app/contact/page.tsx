@@ -7,6 +7,7 @@ import {
   Section,
   Text,
 } from '@/components/ui/primitives';
+import { getContactSettings, getPageContent, getSiteSettings } from '@/lib/cms-service';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
@@ -17,33 +18,33 @@ export const metadata = buildMetadata({
 });
 
 export default function Page() {
+  const page = getPageContent('contact');
+  const contactSettings = getContactSettings();
+  const siteSettings = getSiteSettings();
   return (
     <Section>
       <Container>
         <Breadcrumbs
           items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
         />
-        <Heading level="h1">Contact AusCham Cambodia</Heading>
+        <Heading level="h1">{page?.title ?? 'Contact AusCham Cambodia'}</Heading>
         <Text className="mt-3 max-w-3xl" tone="muted">
-          Share your inquiry and the team will route you to the right
-          membership, events, sponsorship, or media contact pathway.
+          {page?.body ?? 'Share your inquiry and the team will route you to the right membership, events, sponsorship, or media contact pathway.'}
         </Text>
         <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
           <Card>
             <ContactForm />
           </Card>
           <Card>
-            <Text tone="strong">How we handle your enquiry</Text>
+            <Text tone="strong">Inquiry routing</Text>
             <Text className="mt-2 text-sm" tone="muted">
-              Your message is validated, screened for spam, and routed for
-              follow-up. CRM and email workflow integrations are structured for
-              secure production rollout.
+              {contactSettings.map((entry) => `${entry.title}: ${String(entry.recipientEmail ?? '')}`).join(' · ')}
             </Text>
             <Text className="mt-4 text-sm" tone="muted">
-              General contact: info@auschamcambodia.com
+              General contact: {siteSettings.contactEmail}
             </Text>
             <Text className="mt-1 text-sm" tone="muted">
-              Phone: +855 23 000 000
+              Phone: {siteSettings.contactPhone}
             </Text>
           </Card>
         </div>

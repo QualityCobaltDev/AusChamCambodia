@@ -1,32 +1,60 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/primitives';
 import { MobileNavDrawer } from '@/components/layout/mobile-nav-drawer';
-
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/membership', label: 'Membership' },
-  { href: '/events', label: 'Events' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/sponsorship', label: 'Sponsorship' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+import { getBranding, getNavigation, getSiteSettings } from '@/lib/cms-service';
 
 export function HeaderNav() {
+  const nav = getNavigation();
+  const site = getSiteSettings();
+  const branding = getBranding();
+
+  const mobileLinks = [
+    ...nav.left.map((item) => ({ href: String(item.href ?? '/'), label: item.title })),
+    ...nav.right.map((item) => ({ href: String(item.href ?? '/'), label: item.title })),
+    { href: '/admin', label: nav.adminLabel || 'Admin' },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-neutral-200/80 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/65">
-      <Container className="relative flex items-center justify-between py-5">
-        <Link className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900" href="/">
-          AusCham Cambodia
-        </Link>
-        <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <Link key={link.href} href={link.href} className="link-underline text-sm font-medium text-brand-neutral-500 transition-colors duration-200 ease-in-out hover:text-brand-blue-700">
-              {link.label}
+    <header className="sticky top-0 z-50 border-b border-brand-neutral-200/80 bg-white/90 backdrop-blur-xl">
+      <Container className="relative py-4">
+        <div className="hidden items-center md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8">
+          <nav aria-label="Primary left" className="flex items-center justify-end gap-7">
+            {nav.left.map((link) => (
+              <Link key={link.id} href={String(link.href ?? '/')} className="link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+                {link.title}
+              </Link>
+            ))}
+          </nav>
+
+          <Link className="justify-self-center" href="/" aria-label={site.siteName}>
+            {branding.logo ? <img src={branding.logo.storagePath} alt={branding.logo.altText || site.siteName} className="h-11 w-auto object-contain" /> : <span className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900">{site.siteName}</span>}
+          </Link>
+
+          <div className="flex items-center justify-start gap-7">
+            <nav aria-label="Primary right" className="flex items-center gap-7">
+              {nav.right.map((link) => (
+                <Link key={link.id} href={String(link.href ?? '/')} className="link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+                  {link.title}
+                </Link>
+              ))}
+            </nav>
+            <Link href="/admin" className="rounded-md border border-brand-blue-700/30 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-blue-700 transition hover:bg-brand-blue-50">
+              {nav.adminLabel || 'Admin'}
             </Link>
-          ))}
-        </nav>
-        <MobileNavDrawer links={links} />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between md:hidden">
+          <Link href="/" className="text-lg font-semibold text-brand-navy-900">
+            {branding.logo ? <img src={branding.logo.storagePath} alt={branding.logo.altText || site.siteName} className="h-10 w-auto object-contain" /> : site.siteName}
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/admin" className="rounded-md border border-brand-blue-700/30 px-2.5 py-1 text-xs font-semibold text-brand-blue-700">
+              {nav.adminLabel || 'Admin'}
+            </Link>
+            <MobileNavDrawer links={mobileLinks} />
+          </div>
+        </div>
       </Container>
     </header>
   );
