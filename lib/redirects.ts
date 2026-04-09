@@ -18,7 +18,6 @@ export const legacyRedirects: RedirectRule[] = [
   { source: '/index.html', destination: '/', permanent: true },
 
   // Membership
-  { source: '/membership', destination: '/membership', permanent: true },
   { source: '/become-a-member', destination: '/membership/join', permanent: true },
   { source: '/join-us', destination: '/membership/join', permanent: true },
   {
@@ -40,7 +39,6 @@ export const legacyRedirects: RedirectRule[] = [
   },
 
   // Events
-  { source: '/events', destination: '/events', permanent: true },
   { source: '/event-calendar', destination: '/events', permanent: true },
   { source: '/upcoming-events', destination: '/events/upcoming', permanent: true },
   { source: '/past-events', destination: '/events/past', permanent: true },
@@ -48,7 +46,6 @@ export const legacyRedirects: RedirectRule[] = [
   // Resources
   { source: '/news', destination: '/resources/insights', permanent: true },
   { source: '/blog', destination: '/resources/insights', permanent: true },
-  { source: '/resources', destination: '/resources', permanent: true },
   { source: '/publications', destination: '/resources/reports', permanent: true },
   { source: '/reports', destination: '/resources/reports', permanent: true },
   { source: '/guides', destination: '/resources/guides', permanent: true },
@@ -71,7 +68,6 @@ export const legacyRedirects: RedirectRule[] = [
 
   // About and governance
   { source: '/about-us', destination: '/about', permanent: true },
-  { source: '/about', destination: '/about', permanent: true },
   { source: '/committee', destination: '/about/committee', permanent: true },
   { source: '/board', destination: '/about/committee', permanent: true },
   { source: '/mission', destination: '/about/mission', permanent: true },
