@@ -7,6 +7,8 @@ export function HeaderNav() {
   const nav = getNavigation();
   const site = getSiteSettings();
   const branding = getBranding();
+  const contactLink = nav.right.find((item) => item.href === '/contact' || item.title.toLowerCase() === 'contact');
+  const rightLinks = nav.right.filter((item) => item.id !== contactLink?.id);
 
   const mobileLinks = [
     ...nav.left.map((item) => ({ href: String(item.href ?? '/'), label: item.title })),
@@ -26,13 +28,21 @@ export function HeaderNav() {
             ))}
           </nav>
 
-          <Link className="justify-self-center" href="/" aria-label={site.siteName}>
-            {branding.logo ? <img src={branding.logo.storagePath} alt={branding.logo.altText || site.siteName} className="h-11 w-auto object-contain" /> : <span className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900">{site.siteName}</span>}
-          </Link>
+          <div className="justify-self-center text-center">
+            <Link className="inline-flex flex-col items-center" href="/" aria-label="AUSCham Cambodia">
+              {branding.logo ? <img src={branding.logo.storagePath} alt={branding.logo.altText || 'AUSCham Cambodia'} className="h-11 w-auto object-contain" /> : <span className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900">AUSCham Cambodia</span>}
+              <span className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-navy-900">AUSCham Cambodia</span>
+            </Link>
+            {contactLink ? (
+              <Link href={String(contactLink.href ?? '/contact')} className="mt-2 inline-flex link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+                {contactLink.title}
+              </Link>
+            ) : null}
+          </div>
 
           <div className="flex items-center justify-start gap-7">
             <nav aria-label="Primary right" className="flex items-center gap-7">
-              {nav.right.map((link) => (
+              {rightLinks.map((link) => (
                 <Link key={link.id} href={String(link.href ?? '/')} className="link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
                   {link.title}
                 </Link>
