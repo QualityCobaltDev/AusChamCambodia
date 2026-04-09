@@ -37,9 +37,17 @@ Optional staging branch:
 2. Fetches the latest refs from `origin`.
 3. Checks out target branch and runs `git pull --ff-only`.
 4. Runs `pnpm install --no-frozen-lockfile` and `pnpm build`.
-5. Builds Docker image for isolated service only.
-6. Restarts only `auscham_missioncontrol_web`.
-7. Waits for health and records successful commit in `deploy/.last_successful_sha`.
+5. Detects available Compose CLI (`docker compose` or `docker-compose`).
+6. Builds Docker image for isolated service only.
+7. Restarts only `auscham_missioncontrol_web`.
+8. Waits for health and records successful commit in `deploy/.last_successful_sha`.
+
+## Docker Compose compatibility note
+On older VPS images, `docker compose` may be unavailable and commands can fail with errors like:
+- `unknown shorthand flag: 'd' in -d`
+- `unknown flag: --remove-orphans`
+
+In that case, use `docker-compose` (hyphenated binary), or install the Docker Compose plugin. The deployment script automatically detects either option.
 
 ## Add a dedicated Nginx vhost safely (do not touch existing live site)
 ```bash
