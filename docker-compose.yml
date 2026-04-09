@@ -1,6 +1,6 @@
 # This compose file is intentionally isolated from any existing stack on the VPS.
-# It uses a unique project name, container name, network name, and loopback-only host binding.
-name: auscham_missioncontrol
+# It uses a unique container name, network name, and loopback-only host binding.
+# Project naming is provided via `docker-compose -p ...` for compatibility with Compose v1 and v2.
 
 services:
   web:
