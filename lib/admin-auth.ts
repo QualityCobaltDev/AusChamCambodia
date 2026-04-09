@@ -4,14 +4,14 @@ import { redirect } from 'next/navigation';
 
 const COOKIE_NAME = 'auscham_admin_session';
 const secret = process.env.ADMIN_SESSION_SECRET ?? 'auscham-dev-secret';
-const adminPassword = process.env.ADMIN_PASSWORD ?? 'admin123';
+const adminPassword = 'Banner1234!';
 
 function sign(value: string) {
   return createHmac('sha256', secret).update(value).digest('hex');
 }
 
-export function buildSessionValue(email: string) {
-  const payload = `${email}|${Date.now()}`;
+export function buildSessionValue() {
+  const payload = `admin|${Date.now()}`;
   return `${payload}|${sign(payload)}`;
 }
 
@@ -38,15 +38,14 @@ export async function assertAdmin() {
 
 export async function loginAdmin(formData: FormData) {
   'use server';
-  const email = String(formData.get('email') ?? '').trim();
   const password = String(formData.get('password') ?? '');
 
-  if (!email || password !== adminPassword) {
+  if (password !== adminPassword) {
     return { success: false as const, message: 'Invalid credentials' };
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, buildSessionValue(email), {
+  cookieStore.set(COOKIE_NAME, buildSessionValue(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
