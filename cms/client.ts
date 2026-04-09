@@ -1,32 +1,40 @@
-import { getCommitteeMembers, getEventBySlug, getEvents, getHomepageData, getMembershipPlans, getMemberStories, getResourceBySlug, getResources, getSponsorshipPackages } from '@/cms/adapters';
+import {
+  getCommitteeMembers,
+  getEventBySlugAdapter,
+  getEventsAdapter,
+  getHomepageData,
+  getMemberStories,
+  getMembershipPlans,
+  getResourceBySlugAdapter,
+  getResourcesAdapter,
+  getSponsorshipPackagesAdapter,
+} from '@/cms/adapters';
 
-export type CmsProvider = 'sanity' | 'mock';
+export type CmsProvider = 'jsondb';
 
 export interface CmsClient {
   provider: CmsProvider;
   getHomepage: typeof getHomepageData;
   getMembershipPlans: typeof getMembershipPlans;
-  getEvents: typeof getEvents;
-  getEventBySlug: typeof getEventBySlug;
-  getResources: typeof getResources;
-  getResourceBySlug: typeof getResourceBySlug;
-  getSponsorshipPackages: typeof getSponsorshipPackages;
+  getEvents: typeof getEventsAdapter;
+  getEventBySlug: typeof getEventBySlugAdapter;
+  getResources: typeof getResourcesAdapter;
+  getResourceBySlug: typeof getResourceBySlugAdapter;
+  getSponsorshipPackages: typeof getSponsorshipPackagesAdapter;
   getCommitteeMembers: typeof getCommitteeMembers;
   getMemberStories: typeof getMemberStories;
 }
 
 export function getCmsClient(): CmsClient {
-  const provider = (process.env.CMS_PROVIDER as CmsProvider | undefined) ?? 'mock';
-
   return {
-    provider,
+    provider: 'jsondb',
     getHomepage: getHomepageData,
     getMembershipPlans,
-    getEvents,
-    getEventBySlug,
-    getResources,
-    getResourceBySlug,
-    getSponsorshipPackages,
+    getEvents: getEventsAdapter,
+    getEventBySlug: getEventBySlugAdapter,
+    getResources: getResourcesAdapter,
+    getResourceBySlug: getResourceBySlugAdapter,
+    getSponsorshipPackages: getSponsorshipPackagesAdapter,
     getCommitteeMembers,
     getMemberStories,
   };
