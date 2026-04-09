@@ -17,12 +17,12 @@ export function HeaderNav() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-neutral-200/80 bg-white/90 backdrop-blur-xl">
-      <Container className="relative py-4">
+    <header className="sticky top-0 z-50 border-b border-brand-blue-100 bg-[#f2f3f5]">
+      <Container className="relative py-5">
         <div className="hidden items-center md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8">
-          <nav aria-label="Primary left" className="flex items-center justify-end gap-7">
+          <nav aria-label="Primary left" className="flex items-center justify-end gap-10">
             {nav.left.map((link) => (
-              <Link key={link.id} href={String(link.href ?? '/')} className="link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+              <Link key={link.id} href={String(link.href ?? '/')} className="text-sm font-semibold text-brand-neutral-500 transition-colors hover:text-brand-neutral-700">
                 {link.title}
               </Link>
             ))}
@@ -30,25 +30,24 @@ export function HeaderNav() {
 
           <div className="justify-self-center text-center">
             <Link className="inline-flex flex-col items-center" href="/" aria-label="AUSCham Cambodia">
-              {branding.logo ? <img src={branding.logo.storagePath} alt={branding.logo.altText || 'AUSCham Cambodia'} className="h-11 w-auto object-contain" /> : <span className="text-lg font-semibold tracking-[-0.02em] text-brand-navy-900">AUSCham Cambodia</span>}
-              <span className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-navy-900">AUSCham Cambodia</span>
+              <span className="text-[1.65rem] font-extrabold tracking-[-0.02em] text-brand-navy-900">AUSCham Cambodia</span>
             </Link>
             {contactLink ? (
-              <Link href={String(contactLink.href ?? '/contact')} className="mt-2 inline-flex link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+              <Link href={String(contactLink.href ?? '/contact')} className="mt-0.5 inline-flex text-sm font-semibold text-brand-neutral-700 transition-colors hover:text-brand-neutral-900">
                 {contactLink.title}
               </Link>
             ) : null}
           </div>
 
           <div className="flex items-center justify-start gap-7">
-            <nav aria-label="Primary right" className="flex items-center gap-7">
+            <nav aria-label="Primary right" className="flex items-center gap-10">
               {rightLinks.map((link) => (
-                <Link key={link.id} href={String(link.href ?? '/')} className="link-underline text-sm font-medium text-brand-neutral-600 transition-colors hover:text-brand-blue-700">
+                <Link key={link.id} href={String(link.href ?? '/')} className="text-sm font-semibold text-brand-neutral-500 transition-colors hover:text-brand-neutral-700">
                   {link.title}
                 </Link>
               ))}
             </nav>
-            <Link href="/admin" className="rounded-md border border-brand-blue-700/30 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-blue-700 transition hover:bg-brand-blue-50">
+            <Link href="/admin" className="rounded-full border border-brand-blue-700/25 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.06em] text-brand-blue-700 transition hover:border-brand-blue-700/45 hover:bg-brand-blue-50">
               {nav.adminLabel || 'Admin'}
             </Link>
           </div>
