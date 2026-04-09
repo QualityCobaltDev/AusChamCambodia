@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const BASE_URL = 'https://missioncontrol.quest';
+const BASE_URL = 'https://elevareai.online';
 
 export function buildMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
   return {

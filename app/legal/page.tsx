@@ -5,7 +5,7 @@ import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
   title: 'Legal',
-  description: 'Legal documents and platform policies for missioncontrol.quest.',
+  description: 'Legal documents and platform policies for elevareai.online.',
   path: '/legal',
 });
 

@@ -1,6 +1,6 @@
 # QA, Hardening, and Launch Readiness Checklists
 
-This document is the final QA and production-hardening layer for the AusCham Cambodia rebuild before public launch on `missioncontrol.quest`.
+This document is the final QA and production-hardening layer for the AusCham Cambodia rebuild before public launch on `elevareai.online`.
 
 It assumes the isolated deployment model already defined for this project:
 - dedicated app directory and compose project
@@ -76,7 +76,7 @@ Use this section as the primary acceptance sheet before go-live.
 - [ ] Confirm no critical console errors or hydration warnings on key pages.
 
 ### J. SSL and transport
-- [ ] TLS certificate valid for `missioncontrol.quest` and `www.missioncontrol.quest`.
+- [ ] TLS certificate valid for `elevareai.online` and `www.elevareai.online`.
 - [ ] Verify cert auto-renewal dry-run succeeds.
 - [ ] Confirm HSTS policy is intentional (start conservative if first launch).
 - [ ] Confirm mixed-content issues are absent.
@@ -151,7 +151,7 @@ Operational guidance:
 
 ### Secure headers recommendations
 - [ ] Security headers enabled at Nginx vhost level for this project only.
-- [ ] Confirm headers on production response with `curl -I https://missioncontrol.quest`.
+- [ ] Confirm headers on production response with `curl -I https://elevareai.online`.
 
 ---
 
@@ -240,7 +240,7 @@ Launch only if all go criteria are met.
 Run immediately after go-live and repeat during first day.
 
 ### Immediate (0-30 minutes)
-- [ ] Confirm homepage loads on `https://missioncontrol.quest`.
+- [ ] Confirm homepage loads on `https://elevareai.online`.
 - [ ] Confirm TLS valid and no browser warning.
 - [ ] Confirm top nav and footer links function.
 - [ ] Submit and verify at least one test form submission end-to-end.

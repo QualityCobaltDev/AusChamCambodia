@@ -1,6 +1,6 @@
 # AusCham Cambodia Overhaul - Execution Log (Production-Safe)
 
-This implementation log tracks the production-safe rollout sequence for `missioncontrol.quest` on VPS `207.180.207.22`, while preserving isolation from any existing live site.
+This implementation log tracks the production-safe rollout sequence for `elevareai.online` on VPS `207.180.207.22`, while preserving isolation from any existing live site.
 
 ## 1) Scaffold repo and architecture
 **What changed**
@@ -92,7 +92,7 @@ This implementation log tracks the production-safe rollout sequence for `mission
 - `deploy/nginx.auscham.conf`
 - `deploy/nginx.redirects.auscham.conf`
 
-## 9) Add SSL for missioncontrol.quest
+## 9) Add SSL for elevareai.online
 **What changed**
 - Documented certbot webroot-based issuance to avoid touching unrelated vhosts.
 - Added verification and renewal validation procedures.

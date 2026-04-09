@@ -1,4 +1,4 @@
-# Final Safe Launch Plan: AusCham Cambodia Rebuild (`missioncontrol.quest`)
+# Final Safe Launch Plan: AusCham Cambodia Rebuild (`elevareai.online`)
 
 This procedure is designed for a **shared VPS** (`207.180.207.22`) where another website is already running. It is intentionally host-isolated, reversible, and scoped to the AusCham rebuild only.
 
@@ -7,11 +7,11 @@ This procedure is designed for a **shared VPS** (`207.180.207.22`) where another
 ## 1) Pre-Launch Checklist (Must pass before cutover)
 
 ### 1.1 DNS check
-1. Confirm `missioncontrol.quest` A record points to `207.180.207.22`.
-2. Confirm `www.missioncontrol.quest` points correctly (A or CNAME to apex).
+1. Confirm `elevareai.online` A record points to `207.180.207.22`.
+2. Confirm `www.elevareai.online` points correctly (A or CNAME to apex).
 3. Validate propagation from at least two resolvers:
-   - `dig +short missioncontrol.quest`
-   - `dig +short www.missioncontrol.quest`
+   - `dig +short elevareai.online`
+   - `dig +short www.elevareai.online`
 4. Confirm the existing live domain still resolves to its expected target and is unchanged.
 
 ### 1.2 Environment and isolation check
@@ -40,10 +40,10 @@ This procedure is designed for a **shared VPS** (`207.180.207.22`) where another
 ### 1.5 SSL validation (before and after issuance)
 1. Ensure ACME webroot exists: `/var/www/letsencrypt`.
 2. Issue/renew cert (webroot mode) for:
-   - `missioncontrol.quest`
-   - `www.missioncontrol.quest`
+   - `elevareai.online`
+   - `www.elevareai.online`
 3. Validate certificate dates/issuer:
-   - `echo | openssl s_client -servername missioncontrol.quest -connect missioncontrol.quest:443 2>/dev/null | openssl x509 -noout -dates -issuer -subject`
+   - `echo | openssl s_client -servername elevareai.online -connect elevareai.online:443 2>/dev/null | openssl x509 -noout -dates -issuer -subject`
 4. Validate certbot dry-run renewal:
    - `sudo certbot renew --dry-run`
 
@@ -86,9 +86,9 @@ This procedure is designed for a **shared VPS** (`207.180.207.22`) where another
    - Issue/renew cert with webroot if needed.
    - Re-run `sudo nginx -t && sudo systemctl reload nginx`.
 10. **Run immediate external smoke checks**
-   - `curl -I http://missioncontrol.quest` (expect redirect behavior)
-   - `curl -I https://missioncontrol.quest` (expect 200)
-   - `curl -I https://www.missioncontrol.quest`
+   - `curl -I http://elevareai.online` (expect redirect behavior)
+   - `curl -I https://elevareai.online` (expect 200)
+   - `curl -I https://www.elevareai.online`
 11. **Parallel unaffected-site confirmation**
    - Verify the existing live website still serves normally on its own domain.
 12. **Declare launch complete**
@@ -149,7 +149,7 @@ This procedure is designed for a **shared VPS** (`207.180.207.22`) where another
 ## 5) First 24 Hours Monitoring Checklist
 
 ### 0-30 minutes
-- Check uptime every 5 minutes for `https://missioncontrol.quest`.
+- Check uptime every 5 minutes for `https://elevareai.online`.
 - Track Nginx error log for handshake/upstream failures.
 - Confirm no unusual 5xx burst.
 
@@ -177,7 +177,7 @@ This procedure is designed for a **shared VPS** (`207.180.207.22`) where another
 
 ## 6) Later Domain Switch Guidance (temporary -> final production domain)
 
-When moving from `missioncontrol.quest` to final production domain, use a staged cutover:
+When moving from `elevareai.online` to final production domain, use a staged cutover:
 
 1. **Pre-cutover prep**
    - Add final-domain server_name entries in a separate, reviewed vhost update.
@@ -186,7 +186,7 @@ When moving from `missioncontrol.quest` to final production domain, use a staged
 
 2. **Cutover day**
    - Update DNS A/CNAME to VPS for final domain.
-   - Keep `missioncontrol.quest` live as fallback path.
+   - Keep `elevareai.online` live as fallback path.
    - Keep both domain certs active during transition.
 
 3. **Validation after cutover**
@@ -195,11 +195,11 @@ When moving from `missioncontrol.quest` to final production domain, use a staged
    - Confirm forms and email deliverability for final domain.
 
 4. **Temporary-domain strategy after cutover**
-   - For a stabilization window (recommended 2-4 weeks), keep `missioncontrol.quest` active with 301 redirects to final domain.
+   - For a stabilization window (recommended 2-4 weeks), keep `elevareai.online` active with 301 redirects to final domain.
    - After window closes, decide whether to retain as permanent redirect domain.
 
 5. **Reversibility**
-   - If final-domain cutover fails, revert DNS to prior known-good target and continue serving from `missioncontrol.quest` while issues are fixed.
+   - If final-domain cutover fails, revert DNS to prior known-good target and continue serving from `elevareai.online` while issues are fixed.
 
 ---
 

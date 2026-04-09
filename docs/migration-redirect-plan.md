@@ -1,7 +1,7 @@
 # AusCham Overhaul Migration & Redirect Plan
 
 ## Scope and deployment safety assumptions
-- Target runtime: isolated Docker stack on `207.180.207.22`, routed by host header for `missioncontrol.quest` only.
+- Target runtime: isolated Docker stack on `207.180.207.22`, routed by host header for `elevareai.online` only.
 - Migration strategy is incremental and reversible: introduce redirects and 410 logic in the new stack without modifying unrelated vhosts.
 - This plan is written for a controlled cutover from a legacy information architecture (IA) to the new IA.
 
@@ -66,7 +66,7 @@ Use 410 for clearly retired, non-user-serving endpoints and archive artifacts:
 
 1. **Canonical discipline**
    - Self-referencing canonical tags on indexable pages.
-   - Canonical host fixed to `https://missioncontrol.quest` during temporary-domain period.
+   - Canonical host fixed to `https://elevareai.online` during temporary-domain period.
 2. **Information architecture continuity**
    - Membership, Events, Resources, Sponsorship, About, Contact, Legal all receive dedicated indexable hubs.
 3. **Metadata continuity**
@@ -86,7 +86,7 @@ Use 410 for clearly retired, non-user-serving endpoints and archive artifacts:
 - `middleware.ts` returns 410 for retired patterns.
 
 ### Option B: Nginx (edge handling)
-- Use `deploy/nginx.redirects.auscham.conf` as an include snippet under the `missioncontrol.quest` server block.
+- Use `deploy/nginx.redirects.auscham.conf` as an include snippet under the `elevareai.online` server block.
 - Keep snippet vhost-local; do not place rules in global Nginx config.
 
 ## 6) Content migration checklist
@@ -141,7 +141,7 @@ Use 410 for clearly retired, non-user-serving endpoints and archive artifacts:
    - Verify random sample from each legacy cluster reaches intended new destination.
 3. **Canonical validation**
    - Spot-check canonical tags on Home, Membership, Events, Resources, Sponsorship, About, Contact, Legal.
-   - Confirm canonical host and protocol always `https://missioncontrol.quest`.
+   - Confirm canonical host and protocol always `https://elevareai.online`.
 4. **Post-launch monitoring**
    - Check server logs for repeated 404s and promote high-frequency misses into redirect table where appropriate.
    - Re-submit XML sitemap in Google Search Console and monitor indexing/coverage deltas.

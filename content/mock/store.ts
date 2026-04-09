@@ -6,7 +6,7 @@ export const mockContentStore: MockContentStore = {
     slug: 'site-settings',
     status: 'published',
     siteName: 'AusCham Cambodia',
-    siteUrl: 'https://missioncontrol.quest',
+    siteUrl: 'https://elevareai.online',
     contactEmail: 'info@auschamcambodia.com',
     contactPhone: '+855 23 000 000',
     socialLinks: [

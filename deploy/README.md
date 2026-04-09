@@ -1,4 +1,4 @@
-# VPS Deployment Runbook (missioncontrol.quest)
+# VPS Deployment Runbook (elevareai.online)
 
 This runbook deploys the AusCham rebuild **without affecting any existing website** on the same VPS.
 
@@ -82,8 +82,8 @@ sudo chown -R www-data:www-data /var/www/letsencrypt
 # Request cert for apex + www
 sudo certbot certonly \
   --webroot -w /var/www/letsencrypt \
-  -d missioncontrol.quest -d www.missioncontrol.quest \
-  --email admin@missioncontrol.quest --agree-tos --no-eff-email
+  -d elevareai.online -d www.elevareai.online \
+  --email admin@elevareai.online --agree-tos --no-eff-email
 
 # Validate and reload nginx after successful issuance
 sudo nginx -t
@@ -100,8 +100,8 @@ sudo certbot renew --dry-run
 1. Confirm app is healthy on loopback only: `curl -I http://127.0.0.1:3008/api/health`
 2. Confirm Nginx config passes: `sudo nginx -t`
 3. Reload Nginx: `sudo systemctl reload nginx`
-4. Confirm HTTP redirects: `curl -I http://missioncontrol.quest`
-5. Confirm HTTPS serves app: `curl -I https://missioncontrol.quest`
+4. Confirm HTTP redirects: `curl -I http://elevareai.online`
+5. Confirm HTTPS serves app: `curl -I https://elevareai.online`
 6. Confirm existing site still responds normally on its own domain.
 
 ## Rollback
